@@ -1,0 +1,56 @@
+[project]
+name = "tp2"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = ["grpcio>=1.68.1", "grpcio-tools>=1.68.1"]
+
+[tool.basedpyright]
+venv = ".venv"
+venvPath = "."
+# ["off", "basic", "standard", "strict", "all"]
+typeCheckingMode = "basic"
+reportAttributeAccessIssue = false
+reportMissingTypeStubs = false
+
+[tool.ruff]
+line-length = 100
+[tool.ruff.lint]
+select = [
+    "S",
+    "INP",
+    "PYI",
+    "TCH",
+    "E",    # Pycodestyle's Errors
+    "W",    # Pycodestyle's Warnings
+    "F",    # Pyflakes
+    "C90",  # McCabe (Ciclomatic Complexity)
+    "I",    # Isort
+    "N",    # Pep8-naming
+    "UP",   # Pyupgrade
+    "RUF",  # Ruff's builtin rules
+    "PERF", # Perflint
+    "NPY",  # Numpy
+    "FLY",  # Flynt
+    "TRY",  # Tryceratops
+    "PL",   # Pylint
+    "PGH",  # Pygrep-hooks
+    "PD",   # Pandas-vet
+    # Flake 8
+    "ANN", # Annotations
+    "BLE", # Blind except
+    "B",   # Bugbear
+    "A",   # Builtins
+    "C4",  # Comprehensions
+    "EM",  # Errmsg
+    "ISC", # Implicit str concat
+    "ICN", # Import Conventions
+    "PIE", # Pie
+    "Q",   # Quotes
+    "RSE", # Raise
+    "RET", # Return
+    "SIM", # Simplify
+    "TID", # Tidy imports
+    "ARG", # Unused arguments
+    "PTH", # Use Pathlib
+]
+ignore = ["S101", "E501", "S311"]

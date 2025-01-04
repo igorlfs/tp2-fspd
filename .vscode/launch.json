@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Stock Server",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${workspaceFolder}/src/stock_server.py",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "8888"
+            ]
+        },
+        {
+            "name": "Launch Stock Client",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${workspaceFolder}/src/stock_client.py",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "localhost:8888"
+            ]
+        }
+    ]
+}
