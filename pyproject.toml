@@ -7,7 +7,6 @@ dependencies = ["grpcio>=1.68.1", "grpcio-tools>=1.68.1"]
 [tool.basedpyright]
 venv = ".venv"
 venvPath = "."
-# ["off", "basic", "standard", "strict", "all"]
 typeCheckingMode = "basic"
 reportAttributeAccessIssue = false
 reportMissingTypeStubs = false
