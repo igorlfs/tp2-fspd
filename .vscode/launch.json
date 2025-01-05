@@ -37,6 +37,19 @@
                 "8889",
                 "0.0.0.0:8888"
             ]
+        },
+        {
+            "name": "Launch Order Client",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${workspaceFolder}/src/order_client.py",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "0.0.0.0:8888",
+                "0.0.0.0:8889"
+            ]
         }
     ]
 }
