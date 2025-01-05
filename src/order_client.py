@@ -54,3 +54,4 @@ if __name__ == "__main__":
             break
 
     stock_channel.close()
+    order_channel.close()
