@@ -4,6 +4,7 @@ import grpc
 
 import stock_pb2
 import stock_pb2_grpc
+from stock_shared import list_products
 
 if __name__ == "__main__":
     # Primeiro, é preciso abrir um canal para o servidor
@@ -37,10 +38,7 @@ if __name__ == "__main__":
                 print(response.status)
 
             elif command[0] == "L":
-                response = stub.list_products(stock_pb2.ListProductsParams())
-
-                for product in response.products:
-                    print(f"{product.id} {product.description} {product.quantity}")
+                list_products(stub)
 
             elif command[0] == "F":
                 response = stub.kill_server(stock_pb2.KillServerParams())
