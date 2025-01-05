@@ -1,5 +1,6 @@
 import sys
 from concurrent import futures
+from threading import Event
 
 import grpc
 
@@ -12,6 +13,9 @@ stock: list[Product] = []
 
 
 class Stock(stock_pb2_grpc.StockServicer):
+    def __init__(self, stop_event: Event) -> None:
+        self._stop_event = stop_event
+
     def add_product(self, request: Product, _context):  # noqa: ANN001, ANN201
         product: Product | None = next(
             filter(lambda x: request.description == x.description, stock), None
@@ -47,9 +51,8 @@ class Stock(stock_pb2_grpc.StockServicer):
         return stock_pb2.ListProductsResponse(products=products)
 
     def kill_server(self, _request, _context):  # noqa: ANN001, ANN201
+        self._stop_event.set()
         return stock_pb2.KillServerResponse(quantity=len(stock))
-        # TODO kill server
-
 
 
 if __name__ == "__main__":
@@ -60,15 +63,13 @@ if __name__ == "__main__":
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
     # O servidor precisa ser ligado ao objeto que identifica os procedimentos a serem executados.
-    stock_pb2_grpc.add_StockServicer_to_server(Stock(), server)
-
-    # O método add_insecure_port permite a conexão direta por TCP
-    #   Outros recursos estão disponíveis, como uso de um registry
-    #   (dicionário de serviços), criptografia e autenticação.
+    stop_event = Event()
+    stock_pb2_grpc.add_StockServicer_to_server(Stock(stop_event), server)
 
     # TODO creio que precise alterar o IP
     server.add_insecure_port(f"localhost:{port}")
 
-    # O servidor é iniciado e esse código não tem nada para fazer a não ser esperar pelo término da execução.
     server.start()
-    server.wait_for_termination()
+
+    stop_event.wait()
+    server.stop(1)

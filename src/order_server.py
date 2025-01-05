@@ -1,5 +1,6 @@
 import sys
 from concurrent import futures
+from threading import Event
 from typing import TypedDict
 
 import grpc
@@ -32,6 +33,9 @@ orders: list[Items] = []
 
 
 class Order(order_pb2_grpc.OrderServicer):
+    def __init__(self, stop_event: Event) -> None:
+        self._stop_event = stop_event
+
     def create_order(self, request: RequestItems, _context):  # noqa: ANN001, ANN201
         assert stock_stub is not None
 
@@ -80,11 +84,11 @@ class Order(order_pb2_grpc.OrderServicer):
 
         active_orders = len(list(filter(lambda x: x["active"], orders)))
 
+        self._stop_event.set()
+
         return order_pb2.KillServerResponse(
             num_products=response.quantity, num_orders=active_orders
         )
-        # TODO kill server
-
 
 
 if __name__ == "__main__":
@@ -99,15 +103,13 @@ if __name__ == "__main__":
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
     # O servidor precisa ser ligado ao objeto que identifica os procedimentos a serem executados.
-    order_pb2_grpc.add_OrderServicer_to_server(Order(), server)
-
-    # O método add_insecure_port permite a conexão direta por TCP
-    #   Outros recursos estão disponíveis, como uso de um registry
-    #   (dicionário de serviços), criptografia e autenticação.
+    stop_event = Event()
+    order_pb2_grpc.add_OrderServicer_to_server(Order(stop_event), server)
 
     # TODO creio que precise alterar o IP
     server.add_insecure_port(f"localhost:{port}")
 
-    # O servidor é iniciado e esse código não tem nada para fazer a não ser esperar pelo término da execução.
     server.start()
-    server.wait_for_termination()
+
+    stop_event.wait()
+    server.stop(1)
