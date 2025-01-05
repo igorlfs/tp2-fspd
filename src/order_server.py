@@ -12,16 +12,21 @@ from order_shared import Item
 
 stock_stub = None
 
-orders: list[list[Item]]
-
 
 class Items(TypedDict):
+    id: int
+    active: bool
     items: list[Item]
+
+
+orders: list[Items] = []
 
 
 class Order(order_pb2_grpc.OrderServicer):
     def create_order(self, request: Items, _context):  # noqa: ANN001, ANN201
         assert stock_stub is not None
+
+        orders.append(Items(id=len(orders) + 1, items=request.items, active=True))
 
         result = []
 
@@ -33,6 +38,17 @@ class Order(order_pb2_grpc.OrderServicer):
             result.append({"prod_id": item.prod_id, "status": status})
 
         return order_pb2.CreateOrderResponse(result=result)
+
+    def kill_server(self, _request, _context):  # noqa: ANN001, ANN201
+        assert stock_stub is not None
+
+        response = stock_stub.kill_server(stock_pb2.KillServerParams())
+
+        active_orders = len(list(filter(lambda x: x.active, orders)))
+
+        return order_pb2.KillServerResponse(
+            num_products=response.quantity, num_orders=active_orders
+        )
 
 
 MIN_PORT = 2048

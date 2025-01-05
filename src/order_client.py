@@ -41,7 +41,8 @@ if __name__ == "__main__":
                 pass
 
             elif command[0] == "T":
-                # TODO print number of products in stock and active orders
+                response = order_stub.kill_server(order_pb2.KillServerParams())
+                print(f"{response.num_products} {response.num_orders}")
                 break
 
         except EOFError:
