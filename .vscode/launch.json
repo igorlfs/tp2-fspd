@@ -22,7 +22,7 @@
             "program": "${workspaceFolder}/src/stock_client.py",
             "cwd": "${workspaceFolder}",
             "args": [
-                "localhost:8888"
+                "0.0.0.0:8888"
             ]
         },
         {
@@ -35,7 +35,7 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "8889",
-                "localhost:8888"
+                "0.0.0.0:8888"
             ]
         }
     ]

@@ -81,8 +81,7 @@ if __name__ == "__main__":
     stop_event = Event()
     stock_pb2_grpc.add_StockServicer_to_server(Stock(stop_event), server)
 
-    # TODO creio que precise alterar o IP
-    server.add_insecure_port(f"localhost:{port}")
+    server.add_insecure_port(f"0.0.0.0:{port}")
 
     server.start()
 

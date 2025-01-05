@@ -106,8 +106,7 @@ if __name__ == "__main__":
     stop_event = Event()
     order_pb2_grpc.add_OrderServicer_to_server(Order(stop_event), server)
 
-    # TODO creio que precise alterar o IP
-    server.add_insecure_port(f"localhost:{port}")
+    server.add_insecure_port(f"0.0.0.0:{port}")
 
     server.start()
 
