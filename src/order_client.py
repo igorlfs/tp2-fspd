@@ -38,7 +38,9 @@ if __name__ == "__main__":
                     print(f"{item.prod_id} {item.status}")
 
             elif command[0] == "X":
-                pass
+                _, order_id = command.split(" ")
+                response = order_stub.cancel_order(order_pb2.CancelOrderParams(id=int(order_id)))
+                print(response.status)
 
             elif command[0] == "T":
                 response = order_stub.kill_server(order_pb2.KillServerParams())

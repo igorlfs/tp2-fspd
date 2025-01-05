@@ -24,6 +24,19 @@
             "args": [
                 "localhost:8888"
             ]
+        },
+        {
+            "name": "Launch Order Server",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${workspaceFolder}/src/order_server.py",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "8889",
+                "localhost:8888"
+            ]
         }
     ]
 }

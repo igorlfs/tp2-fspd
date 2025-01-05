@@ -4,6 +4,7 @@ package order.v1;
 
 service Order {
   rpc create_order(CreateOrderParams) returns (CreateOrderResponse) {}
+  rpc cancel_order(CancelOrderParams) returns (CancelOrderResponse) {}
   rpc kill_server(KillServerParams) returns (KillServerResponse) {}
 }
 
@@ -23,6 +24,14 @@ message CreateOrderResponse {
 message Result {
   int32 prod_id = 1;
   int32 status = 2;
+}
+
+message CancelOrderParams {
+  int32 id = 1;
+}
+
+message CancelOrderResponse {
+  int32 status = 1;
 }
 
 message KillServerParams {}
