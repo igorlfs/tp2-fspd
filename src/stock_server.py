@@ -6,6 +6,7 @@ import grpc
 import stock_pb2
 import stock_pb2_grpc
 from stock_shared import Product, UpdateProduct
+from util import is_valid_port
 
 stock: list[Product] = []
 
@@ -50,12 +51,10 @@ class Stock(stock_pb2_grpc.StockServicer):
         # TODO kill server
 
 
-MIN_PORT = 2048
-MAX_PORT = 65535
 
 if __name__ == "__main__":
     port = int(sys.argv[1])
-    assert port >= MIN_PORT and port <= MAX_PORT, f"Port must be between {MIN_PORT} and {MAX_PORT}"
+    is_valid_port(port)
 
     # O servidor usa um modelo de pool de threads do pacote concurrent
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

@@ -9,6 +9,7 @@ import order_pb2_grpc
 import stock_pb2
 import stock_pb2_grpc
 from order_shared import Item, ItemWithStatus
+from util import is_valid_port
 
 stock_stub = None
 
@@ -85,12 +86,10 @@ class Order(order_pb2_grpc.OrderServicer):
         # TODO kill server
 
 
-MIN_PORT = 2048
-MAX_PORT = 65535
 
 if __name__ == "__main__":
     port = int(sys.argv[1])
-    assert port >= MIN_PORT and port <= MAX_PORT, f"Port must be between {MIN_PORT} and {MAX_PORT}"
+    is_valid_port(port)
 
     channel = grpc.insecure_channel(sys.argv[2])
 
