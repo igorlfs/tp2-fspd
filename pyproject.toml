@@ -18,7 +18,6 @@ select = [
     "S",
     "INP",
     "PYI",
-    "TCH",
     "E",    # Pycodestyle's Errors
     "W",    # Pycodestyle's Warnings
     "F",    # Pyflakes
@@ -48,8 +47,9 @@ select = [
     "RSE", # Raise
     "RET", # Return
     "SIM", # Simplify
+    "TC",  # Type checking
     "TID", # Tidy imports
     "ARG", # Unused arguments
     "PTH", # Use Pathlib
 ]
-ignore = ["S101", "E501", "S311"]
+ignore = ["S101"]
