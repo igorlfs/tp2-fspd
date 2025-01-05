@@ -4,14 +4,13 @@ import grpc
 
 import stock_pb2
 import stock_pb2_grpc
-from stock_shared import list_products
+from shared import list_products
 
 if __name__ == "__main__":
     # Primeiro, é preciso abrir um canal para o servidor
     # TODO talvez precise ser um canal seguro ou algo assim
     channel = grpc.insecure_channel(sys.argv[1])
-    # E criar o stub, que vai ser o objeto com referências para os procedimentos remotos
-    # (código gerado pelo compilador)
+
     stub = stock_pb2_grpc.StockStub(channel)
 
     while True:
@@ -44,10 +43,10 @@ if __name__ == "__main__":
                 response = stub.kill_server(stock_pb2.KillServerParams())
 
                 print(response.quantity)
+
                 break
 
         except EOFError:
             break
 
-    # Ao final o cliente pode fechar o canal para o servidor.
     channel.close()
