@@ -7,8 +7,6 @@ import stock_pb2_grpc
 from shared import list_products
 
 if __name__ == "__main__":
-    # Primeiro, é preciso abrir um canal para o servidor
-    # TODO talvez precise ser um canal seguro ou algo assim
     channel = grpc.insecure_channel(sys.argv[1])
 
     stub = stock_pb2_grpc.StockStub(channel)
