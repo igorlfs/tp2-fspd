@@ -28,16 +28,16 @@ class OrderId(TypedDict):
 
 
 class RequestItems(TypedDict):
-    items: list[Item]
+    items: list
 
 
 class Items(TypedDict):
     id: int
     active: bool
-    items: list[ItemWithStatus]
+    items: list
 
 
-orders: list[Items] = []
+orders = []
 
 
 class Order(order_pb2_grpc.OrderServicer):

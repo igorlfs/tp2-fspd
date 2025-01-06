@@ -26,7 +26,7 @@ class Product(TypedDict):
     description: str
 
 
-stock: list[Product] = []
+stock = []
 
 
 class Stock(stock_pb2_grpc.StockServicer):

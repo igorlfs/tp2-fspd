@@ -25,8 +25,7 @@ if __name__ == "__main__":
                 products = [x for i, x in enumerate(split_items) if i % 2 == 0]
                 quantities = [x for i, x in enumerate(split_items) if i % 2 == 1]
                 items = [
-                    {"prod_id": int(p), "quantity": int(q)}
-                    for p, q in zip(products, quantities, strict=True)
+                    {"prod_id": int(p), "quantity": int(q)} for p, q in zip(products, quantities)
                 ]
 
                 response = order_stub.create_order(order_pb2.CreateOrderParams(items=items))
