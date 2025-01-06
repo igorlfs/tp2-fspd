@@ -9,10 +9,18 @@ import order_pb2
 import order_pb2_grpc
 import stock_pb2
 import stock_pb2_grpc
-from order_shared import Item, ItemWithStatus
 from util import is_valid_port
 
 stock_stub = None
+
+
+class Item(TypedDict):
+    prod_id: int
+    quantity: int
+
+
+class ItemWithStatus(Item):
+    status: int
 
 
 class OrderId(TypedDict):
@@ -48,11 +56,11 @@ class Order(order_pb2_grpc.OrderServicer):
 
         for item in items:
             response = stock_stub.update_product_quantity(
-                stock_pb2.UpdateProductParams(id=item.prod_id, value=-item.quantity)
+                stock_pb2.UpdateProductParams(id=item["prod_id"], value=-item["quantity"])
             )
             status = (response.status < 0 and response.status) or 0
-            item.status = status
-            result.append({"prod_id": item.prod_id, "status": status})
+            item["status"] = status
+            result.append({"prod_id": item["prod_id"], "status": status})
 
         orders.append(Items(id=len(orders) + 1, items=items, active=True))
 
@@ -68,11 +76,11 @@ class Order(order_pb2_grpc.OrderServicer):
 
         order["active"] = False
 
-        successfully_ordered = [item for item in order["items"] if item.status == 0]
+        successfully_ordered = [item for item in order["items"] if item["status"] == 0]
 
         for item in successfully_ordered:
             stock_stub.update_product_quantity(
-                stock_pb2.UpdateProductParams(id=item.prod_id, value=item.quantity)
+                stock_pb2.UpdateProductParams(id=item["prod_id"], value=item["quantity"])
             )
 
         return order_pb2.CancelOrderResponse(status=0)
