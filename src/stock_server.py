@@ -38,14 +38,14 @@ class Stock(stock_pb2_grpc.StockServicer):
             filter(lambda x: request.description == x["description"], stock), None
         )
 
-        prod_id = len(stock) + 1 if product is None else stock[stock.index(product)].id
+        prod_id = len(stock) + 1 if product is None else stock[stock.index(product)]["id"]
 
         if product is None:
             stock.append(
                 Product(id=prod_id, quantity=request.quantity, description=request.description)
             )
         else:
-            product.quantity += 1
+            product["quantity"] += request.quantity
 
         return stock_pb2.NewProductResponse(id=prod_id)
 
