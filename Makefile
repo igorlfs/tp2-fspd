@@ -1,7 +1,7 @@
 SRC_DIR = src
 PROTO_DIR = proto
 
-PROTOC_COMMAND = python -m grpc_tools.protoc
+PROTOC_COMMAND = python3 -m grpc_tools.protoc
 PROTOC_FLAGS = --python_out=$(SRC_DIR) --grpc_python_out=$(SRC_DIR)
 
 GRPC_FILES = $(wildcard $(SRC_DIR)/*_pb2*.py)
